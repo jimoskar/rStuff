@@ -1,0 +1,83 @@
+---
+title: "R markdown Example"
+author: "Jim Totland"
+date: "17 12 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warning=FALSE,strip.white=TRUE,prompt=FALSE,
+                      cache=TRUE)
+```
+
+
+
+## R Markdown
+
+This is an R Markdown document that was adapted from the default R Markdown script that opens automatically in R when you open a new Markdown file. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. Here we are going to illustrate the use of R Markdown by using the linear regression example from Part 6 in our R programming course. You can embed an R code chunk like this:
+
+```{r preprations}
+library(ggplot2)
+library(ggfortify)
+
+d.bodyfat <- read.csv("~/Desktop/Jim/Github/rStuff/tutorial/data/bodyfat.csv")
+
+str(d.bodyfat)
+```
+
+
+
+## Including Plots
+
+You can also embed plots, for example the pairs plot for the bodyfat data:
+
+```{r bodyfat_pairs, echo=FALSE}
+pairs(d.bodyfat)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. The output is however still printed. We also look at the scatterplot of bodyfat against bmi, just as we did in the simple linear regression example:
+
+```{r bodyfat_ggplot, echo=FALSE, fig.width=4, fig.height=3,fig.align = "center"}
+ggplot(d.bodyfat,aes(x=bmi,y=bodyfat)) + 
+  geom_point() +
+  ylab("body fat (%)") +
+  theme_bw()
+```
+
+Note that in the header of this chunk we have modified some of the options to make the figure a bit nicer and centered in the output file. One tricky thing when you begin working with R Markdown is to find the right R chunk options. For an overview of the most important ones, we refer to the R Markdown cheatsheet, bottom of p.1 <https://rmarkdown.rstudio.com/lesson-15.html>.
+
+
+## Combining R and LaTex
+
+Students in mathematical sciences will most likely be familiar with [LaTex](https://www.latex-project.org/). A very useful feature of R Markdown is that it can easily be combined with LaTex to obtain nice mathematical typesetting, for example.
+
+The Linear regression model of bodyfat ($y$) against bmi ($x$) can then be written as
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i, \quad \epsilon \sim \mathsf{N}(0,\sigma_E^2) \ .$$
+
+## The linear regression example
+
+Now we fit the above model. For illustration, we use `include=FALSE` in the options, but we will then print the results and the residual plots:
+
+```{r, include=FALSE}
+r.m1 <- lm(bodyfat ~ bmi, data=d.bodyfat)
+```
+
+```{r}
+summary(r.m1)
+```
+
+The residual plots look as follows:
+
+```{r, echo=FALSE, fig.width=6, fig.height=6,fig.align = "center"}
+autoplot(r.m1)
+```
+
+
+## Calling R outside of code chunks
+
+One *very* useful feature of R Markdown is that we can write completely reproducible reports. If you detect an error in your data, for example, and you have to re-do the analysis, you have to copy-paste all the updated results if you use a word file, for example. In R Markdown, you can parameterize the results such that they are automatically updated. 
+
+The slope estimate in the regression of bodyfat against bmi is `r round(summary(r.m1)$coef[2,1],2)`, for example. As you can see here (checking the Rmd), this is not hard-coded into the text, but directly uses the results from the R output, namely a rounded version of the `summary()` output.

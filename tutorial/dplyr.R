@@ -139,6 +139,9 @@ storms.small %>%
   group_by(name,month) %>% 
   summarise(mean.wind=mean(wind)) 
 
+
+
+
 # Each time we summarize we remove one layer of our grouping
 storms.small %>% 
   group_by(name,month) %>% 
