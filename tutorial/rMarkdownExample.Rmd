@@ -81,3 +81,25 @@ autoplot(r.m1)
 One *very* useful feature of R Markdown is that we can write completely reproducible reports. If you detect an error in your data, for example, and you have to re-do the analysis, you have to copy-paste all the updated results if you use a word file, for example. In R Markdown, you can parameterize the results such that they are automatically updated. 
 
 The slope estimate in the regression of bodyfat against bmi is `r round(summary(r.m1)$coef[2,1],2)`, for example. As you can see here (checking the Rmd), this is not hard-coded into the text, but directly uses the results from the R output, namely a rounded version of the `summary()` output.
+
+## More plotting
+
+Plottiing the pdf of the normal distribution with basic R:
+
+```{r, echo = F}
+x <- seq(-3, 3, by = 0.05)
+plot(dnorm(x) ~ x, type = "l")
+
+```
+
+With `ggplot`:
+
+```{r, echo = T}
+
+dx  <- as.data.frame(x)
+ggplot(dx, aes(x = x, y = dnorm(x))) +
+  geom_line(color="darkblue") +
+  theme_minimal()
+```
+
+
