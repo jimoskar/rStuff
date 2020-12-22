@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Cheatsheet based on R course by IME"
 output: html_document
 ---
 
@@ -7,7 +7,37 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Basics
+
+- Modifying multiple elements in a vector
+
+```{r, echo = T}
+
+x <- seq(1,4,by = 1)
+x[c(1,2,3)] = 5
+x
+
+#or alternatively
+
+x <- 1:4
+x[1:3] = 5
+x
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
