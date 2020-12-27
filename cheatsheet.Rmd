@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basics
 
-- Modifying multiple elements in a vector
+- Creating and modifying a vector
 
 ```{r, echo = T}
 
@@ -24,7 +24,36 @@ x[1:3] = 5
 x
 ```
 
+- Matrix/vector multiplication
 
+```{r}
+x <- 1:5
+
+y <- 6:10
+
+a <-  t(x) %*% y 
+```
+
+- `order()` and `sort()`
+
+```{r}
+#order() creates a permutation vector and can be used to sort data.frames
+sort(x) == x[order(x)]
+rev(sort(x)) == x[order(-x)]
+```
+
+- Factors
+
+```{r}
+gender = factor(c("male", "female", "female", "male"))
+
+# Look at it and make a summary table
+gender
+table(gender)
+
+#Find number of males
+sum(gender == "male")
+```
 
 
 
