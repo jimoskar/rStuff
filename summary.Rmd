@@ -1,6 +1,6 @@
 ---
-title: "Cheatsheet based on R course by IME"
-output: html_document
+title: "Summary of R course by IME"
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
