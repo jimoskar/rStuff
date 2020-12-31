@@ -1,6 +1,6 @@
 ---
 title: "Summary of R course by IME"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basics
 
-- Creating and modifying a vector
+- **Creating and modifying a vector**
 
 ```{r, echo = T}
 
@@ -23,8 +23,7 @@ x <- 1:4
 x[1:3] = 5
 x
 ```
-
-- Matrix/vector multiplication
+- **Vector multiplication**
 
 ```{r}
 x <- 1:5
@@ -32,17 +31,16 @@ x <- 1:5
 y <- 6:10
 
 a <-  t(x) %*% y 
-```
-
-- `order()` and `sort()`
+``` 
+- **`order()` and `sort()`**
 
 ```{r}
 #order() creates a permutation vector and can be used to sort data.frames
 sort(x) == x[order(x)]
 rev(sort(x)) == x[order(-x)]
-```
-
-- Factors
+```  
+  
+- **Factors**
 
 ```{r}
 gender = factor(c("male", "female", "female", "male"))
@@ -53,35 +51,39 @@ table(gender)
 
 #Find number of males
 sum(gender == "male")
+```  
+
+
+- **Matrices**
+```{r}
+#Creating matrices
+A <- matrix(1:6, nrow = 2, ncol = 3, byrow = TRUE)
+
+x1 <- 1:3
+x2 <-  c(7, 6, 6)
+x3 <-  c(12, 19, 21)
+
+# Bind vectors x1, x2, and x3 column-wise into a matrix
+C <-  cbind(x1, x2, x3) # Bind vectors x1, x2, and x3 column-wise into a matrix
+
+
+# Bind vectors x1, x2, and x3 row-wise into a matrix.
+R = rbind(x1, x2, x3) # Bind vectors x1, x2, and x3 row-wise into a matrix.
+```
+```{r, echo = T, eval = F}
+# Here are some other useful  matrix commands
+
+dim(A) # get the dimensions of a matrix
+nrow(A) # number of rows
+ncol(A) # number of columns
+apply(A, 1, sum) # apply the sum function to the rows of A
+apply(A, 2, sum) # apply the sum function to the columns of A
+sum(diag(A)) # trace of A
+
+A = diag(1:3) # a 3 by 3 diagonal matrix with entries 1, 2, 3
+solve(A) # inverse of A, in general solve(A,b) solves Ax=b wrt x
+det(A) # determinant of A
+
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
