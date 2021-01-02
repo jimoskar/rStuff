@@ -7,7 +7,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-\textcolor{red}{Disclaimer: This is not a very good summary of the course provided by IME, but rather served as way for me to get familiar with `rmarkdown` :)} 
+\textcolor{red}{Disclaimer: This is not a very good summary of the course provided by IME, but rather served as way for me to get familiar with rmarkdown :)} 
 
 \ 
 

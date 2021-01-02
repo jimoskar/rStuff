@@ -1,7 +1,8 @@
 
 #Plotting basics
 
-df <- read.csv("~/Desktop/R/data/df.csv")
+#df <- read.csv("~/Desktop/R/data/df.csv")
+df <- read.csv("~/Github/rStuff/tutorial/data/df.csv")
 
 
 str(df)
