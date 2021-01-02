@@ -7,6 +7,10 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+\textcolor{red}{Disclaimer: This is not a very good summary of the course provided by IME, but rather served as way for me to get familiar with `rmarkdown` :)} 
+
+\ 
+
 ## Basics
 
 - **Creating and modifying a vector**
@@ -108,10 +112,10 @@ library(car) #Contain SLID
 SLID = na.omit(SLID) # We only use rows without missing values
 ```
 
-- Scatterplots
+- **Scatterplots**
 
 
-```{r}
+```{r, cache = T}
 ggplot(SLID, aes(education, wages)) + #aes(x,y) plots y against x.
   geom_point() +  
   labs(title = "Scatterplot") +
@@ -121,6 +125,191 @@ ggplot(SLID, aes(education, wages)) + #aes(x,y) plots y against x.
   facet_wrap(~language + sex) + #facet_wrap divides the dataset into langauge/sex pairs.
   theme_minimal()
 ```
+
+\ 
+
+- **Histogram and density plots**
+```{r, fig.height = 3, fig.width = 5, fig.align = 'center', cache = T}
+ggplot(SLID, aes(wages)) + 
+  geom_histogram(binwidth = 2,aes(y=..density..)) + 
+  geom_density(color="darkblue",adjust = 2) +
+  labs(title = "Histogram & Density") +
+  xlab("Wages") +
+  ylab("Frequency") +
+  theme_minimal()
+```
+
+\ 
+
+- **Boxplot**
+
+```{r, fig.height = 3, fig.width = 5, fig.align = 'center', cache = T}
+ggplot(SLID, aes(x=language, y=wages)) +
+  geom_boxplot(fill = "skyblue") +
+  labs(title = "Box Plot") +
+  theme_minimal()
+```
+
+- **Pairs plot**  
+As opposed to the standard `pairs()` function, ggplot offers a more powerful version, which requires the library `GGally`:
+
+```{r, eval = F}
+library(GGally)
+ggpairs(SLID) + theme_minimal()
+```
+
+## Data manipualtion with `dplyr`
+
+`dplyr` is a grammar of data manipulation which is a part of the tidyverse.
+```{r, message = F}
+#Setup
+library(tidyverse)
+library(nycflights13)
+```
+
+- **`glimpse()` and `selelct()`**
+
+```{r, eval = F}
+data(storms) # load data
+
+# The storms data is a so-called tibble (https://tibble.tidyverse.org/), 
+# which we can quickly summarise by using the function glimpse()
+glimpse(storms)
+
+# select the two columns called storm and pressure. 
+# The first argument in the select() function is always the data 
+# (note that the storm column is called "name" in the dataset we use)
+select(storms,name,pressure)
+
+# select all colums except name
+select(storms,-name)
+
+# select all columns between the column "name" and "hour" 
+select(storms,name:hour)
+```
+
+\ 
+
+- **`filter()`**  
+Chooses all rows that fulfill the prescribed conditions:
+```{r, eval = F}
+# We can filter out all the rows that fulfill the condition of wind>50. 
+# Again, the dataset is the first argument in the filter() function;
+# this leaves 4163 rows in the dataset
+filter(storms,wind>50)
+
+# Filtering for more than one condition;
+# Here we filter for wind speet >50 and three storms;
+# This leaves only 105 rows: 
+filter(storms,wind>50,name %in% c("Alberto","Alex","Allison"))
+```
+
+\  
+
+- **`mutate()`**  
+Adds new columns to the existing dataframe:
+
+```{r, eval = F}
+# Here we add a new column to the strom data, called "ratio". 
+# It contains the ratio between the pressure and the wind columns:
+mutate(storms,ratio=pressure/wind)
+
+# We can even add another column at the same time, 
+# which is a transformation of a new column generated earlier in the same call:
+mutate(storms,ratio=pressure/wind, inverse = 1/ratio)
+```
+
+\ 
+
+- **`summarise()`**  
+Summaraises the data in some way:
+```{r, eval = F}
+# We can for example calculate median and variance of all wind speeds
+summarise(storms, median=median(wind),variance=var(wind))
+
+# Alternatively, we can "pipe" the dataset as follows
+storms %>% summarise(median=median(wind),variance=var(wind))
+```
+
+\ 
+
+- **`arrange()`**  
+Rearranges the order of the rows depending on some values of the columns.
+
+```{r, eval = F}
+# To sort the storms data in increasing order of wind speed:
+arrange(storms,wind)
+
+# To sort the storms data in decreasing order of wind speed:
+arrange(storms,desc(wind))
+
+# To sort the storms data in increasing order of wind speed, and within the same  
+# wind speed, order according to year (it's like a hierarchicay way of ordering)
+arrange(storms,wind,year)
+
+```
+\ 
+
+- **The pipe operator `%>%`**
+```{r, eval = F}
+# As an example, the following two ways of using select are equivalent
+select(storms,name,pressure)
+storms %>% select(name,pressure)
+# So storms is taken as the first argument in the following command select()
+
+# The same holds for all the other examples, e.g.
+filter(storms,wind>50) # is the same as
+storms %>% filter(wind>50)
+
+# Piping becomes most useful if we pipe sequentially several times, for example
+storms %>%
+  filter(wind>50) %>%
+  select(name,pressure)
+
+# The above command first filters the wind speeds >50 and from that filtered version
+# of the data, selects the columns name and pressure. We could do the same by 
+# nesting the commands into each other:
+
+select(filter(storms,wind>50),name,pressure)
+
+# but that quickly becomes very confusing...
+
+
+# Another example where we first add the new column ratio, and then select the name
+# and ratio columns from that dataset
+storms %>%
+  mutate(ratio=pressure/wind) %>% 
+  select(name,ratio)
+
+```
+
+\ 
+
+- **`group_by()` + `summarise()`**
+
+```{r, eval = F}
+# For better illustration we reduce our storms data to only three storms
+storms.small <- storms %>% filter(name %in% c("Alicia","Barry","Ernesto"))
+
+# The following code gives the mean and variance of wind speed measured in each
+# storm, and the number of measurements taken (n)
+
+storms.small %>% 
+  group_by(name) %>% 
+  summarise(mean=mean(wind),variance=var(wind),n=n())
+
+# Example where we group for two variables, name of the storm and month
+storms.small %>% 
+  group_by(name,month) %>% 
+  summarise(mean.wind=mean(wind)) 
+
+# Each time we summarize we remove one layer of our grouping
+storms.small %>% 
+  group_by(name,month) %>% 
+  summarise(mean.wind=mean(wind)) %>% 
+  summarise(mean.wind=mean(mean.wind)) 
+```
+
 
 
 
