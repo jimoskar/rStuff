@@ -1,6 +1,6 @@
 ---
 title: "Summary of R course by IME"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +23,9 @@ x <- 1:4
 x[1:3] = 5
 x
 ```
+  
+\ 
+  
 - **Vector multiplication**
 
 ```{r}
@@ -32,6 +35,9 @@ y <- 6:10
 
 a <-  t(x) %*% y 
 ``` 
+
+\ 
+
 - **`order()` and `sort()`**
 
 ```{r}
@@ -39,7 +45,9 @@ a <-  t(x) %*% y
 sort(x) == x[order(x)]
 rev(sort(x)) == x[order(-x)]
 ```  
-  
+
+\ 
+
 - **Factors**
 
 ```{r}
@@ -53,6 +61,7 @@ table(gender)
 sum(gender == "male")
 ```  
 
+\ 
 
 - **Matrices**
 ```{r}
@@ -85,5 +94,38 @@ solve(A) # inverse of A, in general solve(A,b) solves Ax=b wrt x
 det(A) # determinant of A
 
 ```
+
+\ 
+
+## Plotting (ggplot)
+
+`ggplot2` is a package which offers an alternative way to plot data as opposed to the standard `plot()` function. What follows is an example of using ggplot with the dataset `SLID`.
+
+```{r, message = F}
+#Setup
+library(ggplot2)
+library(car) #Contain SLID
+SLID = na.omit(SLID) # We only use rows without missing values
+```
+
+- Scatterplots
+
+
+```{r}
+ggplot(SLID, aes(education, wages)) + #aes(x,y) plots y against x.
+  geom_point() +  
+  labs(title = "Scatterplot") +
+  xlab("Education") +
+  ylab("Wages") +
+  theme_bw() +
+  facet_wrap(~language + sex) + #facet_wrap divides the dataset into langauge/sex pairs.
+  theme_minimal()
+```
+
+
+
+
+
+
 
 
