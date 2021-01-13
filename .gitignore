@@ -21,3 +21,9 @@ tmp_R_cache*
 unnamed-chunk*
 vignettes/*.md
 vignettes/figure
+
+#bookdown
+_publish.R
+_book
+_bookdown_files
+rsconnect
