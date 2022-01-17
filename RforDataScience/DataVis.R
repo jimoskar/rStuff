@@ -6,6 +6,32 @@ library(tidyverse)
 # Geometric objects  #
 # -------------------#
 
+## 3.3.1 Exercises
+# 1.
+# Wrong:
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+# Fix:
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color ="blue")
+
+# 2.
+str(mpg)
+mpg
+
+# 3.
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, color = displ))
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, size = displ))
+
+# 4.
+ggplot(data = mpg, aes(x = displ, y = displ)) + geom_point() 
+
+# 5.
+ggplot(data = mpg, aes(x = displ, y = displ, stroke = 3), shape = 21) + geom_point() 
+
+# 6.
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, color = displ < 5))
+
 # Combining geometric objects:
 ggplot(data = mpg) + 
   geom_smooth(mapping = aes(x = displ, y = hwy, color = drv)) +
@@ -21,6 +47,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
   geom_point() + 
   geom_smooth(se = FALSE)
 
+
 # Exercise 3.6.6
 
 # With stroke:
@@ -32,6 +59,8 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_point(color = "white", size = 4) +
   geom_point(aes(color = drv))
 
+ggplot(data = mpg, mapping = aes(x = drv, y = class)) + geom_point()
+?mpg
 # ------------------------------#
 # Statistical transformations   #
 # ------------------------------#
