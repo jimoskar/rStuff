@@ -32,6 +32,34 @@ ggplot(data = mpg, aes(x = displ, y = displ, stroke = 3), shape = 21) + geom_poi
 # 6.
 ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, color = displ < 5))
 
+## 3.5.1
+# 1.
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid( ~ displ)
+
+# 2.
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))
+
+# 3.
+# by row:
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+# by column:
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+
+# 4.
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+
+# 5.
+
+
 # Combining geometric objects:
 ggplot(data = mpg) + 
   geom_smooth(mapping = aes(x = displ, y = hwy, color = drv)) +
