@@ -59,6 +59,48 @@ ggplot(data = mpg) +
 
 # 5.
 
+## 3.6.1 Exercises
+
+# 1.
+# geom_box
+
+# 2.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+
+# 3.
+# Removes lenged.
+
+# 4.
+# se: Whether to include prediction interval
+
+# 5.
+# No.
+
+# 6.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth(se = F)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, group = drv)) + 
+  geom_point() + 
+  geom_smooth(se = F)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, group = drv, color  = drv)) + 
+  geom_point() + 
+  geom_smooth(se = F)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = drv)) + 
+  geom_smooth(se = F)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = drv)) + 
+  geom_smooth(aes(linetype = drv),se = F)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = drv), shape = 21) 
 
 # Combining geometric objects:
 ggplot(data = mpg) + 
@@ -72,8 +114,9 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
 
 # Without confidence interval:
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
-  geom_point() + 
-  geom_smooth(se = FALSE)
+  geom_point(size = 4, color = 'white') +
+  geom_point()
+  
 
 
 # Exercise 3.6.6
