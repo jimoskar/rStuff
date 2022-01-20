@@ -117,6 +117,46 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
   geom_point(size = 4, color = 'white') +
   geom_point()
   
+# 3.8.1 Exercises
+# 1.
+# Fix: 
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_jitter()
+
+# 2.
+?geom_jitter
+
+# 3.
+?geom_count
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_count()
+
+# 4.
+?geom_boxplot # dodge2
+ggplot(data = mpg) + 
+  geom_boxplot(aes(x = drv, y = displ))
+
+# 3.9.1 Exercises
+# 1.
+ggplot(data = mpg) + 
+  geom_bar( mapping = aes(x = factor(1), fill = drv), width = 1) + 
+  coord_polar(theta = "y")
+
+# 2.
+?labs()
+
+# 3.
+?coord_quickmap
+?coord_map
+
+# 4.
+?coord_fixed
+?geom_abline
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
 
 
 # Exercise 3.6.6

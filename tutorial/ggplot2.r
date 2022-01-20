@@ -12,7 +12,7 @@ library(ggplot2)
 library(car)
 
 
-df <- read.csv("~/Desktop/R/data/df.csv")
+df <- read.csv("~/Github/rStuff/tutorial/data/df.csv")
 
 plot(df$weight ~ df$height,
      ylab="Weight (kg)", xlab="Height (m)")
