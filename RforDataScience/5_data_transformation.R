@@ -136,8 +136,39 @@ flights %>% filter(arr_delay > 0) %>% group_by(dest) %>%
          arr_delay, arr_delay_prop) %>%
   arrange(dest, desc(arr_delay_prop))
 
-  
+# 5.
+?lag()
+lagged_delays <- flights %>%
+  arrange(origin, month, day, dep_time) %>%
+  group_by(origin) %>%
+  mutate(dep_delay_lag = lag(dep_delay)) %>%
+  filter(!is.na(dep_delay), !is.na(dep_delay_lag))
 
-  
+lagged_delays %>%
+  group_by(dep_delay_lag) %>%
+  summarise(dep_delay_mean = mean(dep_delay)) %>%
+  ggplot(aes(y = dep_delay_mean, x = dep_delay_lag)) +
+  geom_point() +
+  scale_x_continuous(breaks = seq(0, 1500, by = 120)) +
+  labs(y = "Departure Delay", x = "Previous Departure Delay")
+
+# 6.
+flights %>% group_by(origin, dest) %>% summarise(min(air_time, na.rm = TRUE))
+
+# 7.
+flights %>%
+  # find all airports with > 1 carrier
+  group_by(dest) %>%
+  mutate(n_carriers = n_distinct(carrier)) %>%
+  filter(n_carriers > 1) %>%
+  # rank carriers by number of destinations
+  group_by(carrier) %>%
+  summarize(n_dest = n_distinct(dest))
+
+# 8.
+flights %>% select(tailnum, year, month, day, arr_delay) %>% 
+  filter(!is.na(arr_delay)) %>%  mutate(gt1 = arr_delay > 60) %>% 
+  group_by(tailnum) %>% mutate(cum_gt1 = cumsum(gt1)) %>%  summarise(num_b4gt1 = sum(cum_gt1 == 0))
+
   
   
