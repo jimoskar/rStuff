@@ -75,3 +75,69 @@ transmute(flights, dep_time_min = time2mins(dep_time), sched_dep_time_min = time
 
 # 5.
 1:3 + 1:10 # recycles values of shorter vector.
+
+# 5.6.7 Exercises
+# 1.
+# Could take mean, could consider se, positive mean, compare dep_delay with arr_delay.
+flights %>% group_by(dest) %>% summarise(arr_mean = mean(arr_delay, na.rm = TRUE), dep_mean = mean(dep_delay, na.rm = TRUE))
+flights %>% group_by(dest) %>% 
+  summarise(count = n(), dist = mean(distance, na.rm = TRUE), delay = mean(arr_delay, na.rm = TRUE)) %>% 
+  filter(dist < 4000, count > 20) %>% 
+  ggplot(aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 1/3) +
+  geom_smooth(se = FALSE)
+
+# 2.
+not_cancelled <- flights %>% filter(!is.na(arr_delay), ! is.na(dep_delay))
+not_cancelled %>% count(dest) 
+not_cancelled %>% count(tailnum, wt = distance)
+# Alternative:
+not_cancelled %>% group_by(dest) %>% summarise(count = n())
+not_cancelled %>% group_by(tailnum) %>% summarise(n = sum(distance))
+
+# 3.
+# 4.
+flights %>%  group_by(day) %>% 
+  summarise(num_cancelled = sum(is.na(dep_delay))) %>% 
+  ggplot(aes(x = day, y =  num_cancelled)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+
+# 5.
+flights %>% group_by(carrier) %>% 
+  summarise(arr_avg = mean(arr_delay, na.rm = TRUE), dep_avg = mean(dep_delay, na.rm = TRUE)) %>% 
+  arrange(desc(arr_avg), desc(dep_avg))
+# F9 seems to be the worst
+flights %>% group_by(carrier, dest) %>% summarise(n())
+
+# 6.
+?count()
+
+# 5.7.1 Exercises
+# 1.
+tibble(x = 1:9,
+       group = rep(c("a", "b", "c"), each = 3))
+
+# 2.
+flights %>% group_by(tailnum) %>% 
+  summarise(arr_mean = mean(arr_delay, na.rm = TRUE), dep_mean = mean(dep_delay, na.rm = TRUE)) %>% 
+  arrange(desc(arr_mean), desc(dep_mean))
+  
+# 3.
+flights %>% filter(!is.na(arr_delay), !is.na(dep_delay)) %>% mutate(is_delayed = arr_delay > 0) %>%
+  group_by(hour) %>%  summarise(count = n(), delayed = sum(is_delayed), arr_avg = mean(arr_delay)) %>% 
+  ggplot(aes(x = hour, y = delayed/count)) +
+  geom_point()
+
+# 4.
+flights %>% filter(arr_delay > 0) %>% group_by(dest) %>% 
+  mutate(arr_delay_tot = sum(arr_delay), arr_delay_prop = arr_delay/arr_delay_tot) %>% 
+  select(dest, month, day, dep_time, carrier, flight,
+         arr_delay, arr_delay_prop) %>%
+  arrange(dest, desc(arr_delay_prop))
+
+  
+
+  
+  
+  
